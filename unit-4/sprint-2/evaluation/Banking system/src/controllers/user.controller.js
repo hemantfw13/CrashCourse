@@ -1,24 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const user = require("../models/user.models");
+const userSchema = require("../models/user.models");
 //const user = require("../models/user.models");
-router.get("", async (req, res) => {
-  try {
-    const item = await user.find().lean().exec();
-    res.send(item);
-  } catch (er) {
-    console.log("Error:" + er);
-    res.status(500).send("Error:" + er);
-  }
+
+router.post("/user", async (req, res) => {
+  const user = await userSchema.create(req.body);
+
+  res.send(user);
 });
-router.post("", async (req, res) => {
-  try {
-    const item = await user.find().create(req.body);
-    console.log(req.body.type);
-    res.status(201).send(item);
-  } catch (er) {
-    console.log("Error:" + er);
-    res.status(500).send("Error:" + er);
-  }
+
+router.get("/user", async (req, res) => {
+  const user = await userSchema.find().lean().exec();
+  res.send(user);
 });
 module.exports = router;
