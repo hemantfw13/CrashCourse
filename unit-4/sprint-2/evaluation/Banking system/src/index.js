@@ -1,11 +1,20 @@
 const express = require("express");
-const connect = require("./configs/db");
 const app = express();
-app.listen(2345, function () {
+app.use(express.json());
+
+const connect = require("./configs/connect");
+
+const userController = require("./controllers/user.controller");
+app.use("/users", userController);
+
+const masteraccountController = require("./controllers/masterAccount.controller");
+app.use("/masterAccount", masteraccountController);
+
+app.listen(2345, async () => {
   try {
     await connect();
-  } catch (e) {
-    console.error("error is ", e.message);
+    console.log("listen port one");
+  } catch (er) {
+    console.error("Error :", +er);
   }
-  console.log("listen port one");
 });
